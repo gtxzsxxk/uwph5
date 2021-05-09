@@ -4,7 +4,7 @@
 @titlebar-fontsize:14px;
 @bottom-color: lightsteelblue;
 @bottom-font-color: #fafafa;
-@bottom-height: 70px;
+@bottom-height: 90px;
 @font-color:shade(@basecolor,70%);
 
 /*body{
@@ -85,19 +85,21 @@ u-bottom::after {
     top: 0;
     left: 0;
     background-image: url('./avatar.jpg');
-    filter: blur(30px);
+    filter: blur(8px);
+    opacity: 0.25;
+    z-index:-1;
+    background-size: cover;
 }
 
 u-bottom-item{
-    margin-left: 5px;
     display: flex;
     align-items: center;
     canvas{
-        height:(@bottom-height - 10);
-        width: (@bottom-height - 10);
+        height:@bottom-height;
+        width: @bottom-height;
     }
     u-bottom-updown{
-        height:(@bottom-height - 10);
+        height:@bottom-height;
     }
     overflow: hidden;
     text-overflow: ellipsis;
@@ -108,7 +110,7 @@ u-bottom-item{
 {
     .u-progress{
         height: 6px;
-        width: 15vh;
+        width: 12vw;
         background-color: darken(@bottom-color,20%);
         margin-left: 5px;
         margin-right: 5px;
@@ -122,7 +124,7 @@ u-bottom-item{
 {
     .u-progress{
         height: 6px;
-        width: 50vh;
+        width: 40vw;
         background-color: darken(@bottom-color,20%);
         margin-left: 5px;
         margin-right: 5px;

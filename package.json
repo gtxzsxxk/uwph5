@@ -1,0 +1,21 @@
+{
+  "name": "uwph5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "python local_debug.py",
+    "exec": "python3 local_debug.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shinoyasan/uwph5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shinoyasan/uwph5/issues"
+  },
+  "homepage": "https://github.com/shinoyasan/uwph5#readme"
+}
