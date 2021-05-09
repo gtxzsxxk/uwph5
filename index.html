@@ -11,7 +11,7 @@
     <script>
         less = {
             env: "development",
-            javascriptEnabled:true
+            javascriptEnabled: true
         };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
@@ -39,59 +39,89 @@
             <u-title-right>
                 <u-title-button><i class="fa fa-minus" aria-hidden="true"></i></u-title-button>
                 <u-title-button><i class="fa fa-window-maximize" aria-hidden="true"></i> </u-title-button>
-                <u-title-button><i class="fa fa-times" aria-hidden="true"></i></u-title-button>
+                <u-title-button><i class="fa fa-window-close-o" aria-hidden="true"></i></u-title-button>
             </u-title-right>
         </u-titlebar>
         <u-titlebar-placeholder></u-titlebar-placeholder>
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-top:15px">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                 </div>
-                <div class="col-sm-4">
-                    <div class="box">
-                        <span class="item">item</span>
-                    </div>
+                <div class="col-sm-8">
+                    <audio id='player'>
+                        <source src="./Westlife-Soledad.mp3">
+                    </audio>
+                    <h3>
+                        Here are your songs
+                    </h3>
+                    <hr>
+                    <h6>But we have nothing.</h6>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                 </div>
             </div>
         </div>
 
         <u-bottom>
-            <u-bottom-item>
+            <u-bottom-item class="u-bottom-item-hover">
                 <canvas id="avatarCanvas">
                 </canvas>
                 <img id='avatarImg' src="./avatar.jpg" style="display: none;">
-                <u-bottom-updown style="margin-left: 5px;" class="minor">
+                <u-bottom-updown style="margin-left: 5px;max-width: 25vw;" class="u-minor">
                     <span style="font-size:medium;">{{music}}</span>
                     <span style="font-size: small;">{{singer}}</span>
                 </u-bottom-updown>
             </u-bottom-item>
-            <u-bottom-item style="margin-left: 5px;">
-                <span class="u-progress-font">00:00</span>
-                <div>
-                    <!--div class="progress-bar progress-bar-striped progress-bar-animated" style="width:50%"></div-->
-                    <input type="range" class="u-progress">
-                </div>
-                <span class="u-progress-font">03:42</span>
+            <u-bottom-item style="padding-right: 20px;">
+                <u-bottom-updown>
+                    <u-bottom-updown-element class="u-major">
+                        <span class="u-progress-font">00:00</span>
+                        <div style="display: flex;
+                        align-items: center;width: 100%;">
+                            <!--div class="progress-bar progress-bar-striped progress-bar-animated" style="width:50%"></div-->
+                            <input type="range" class="u-progress" value="0">
+                        </div>
+                        <span class="u-progress-font">03:42</span>
+                    </u-bottom-updown-element>
+                    <u-bottom-updown-element style="justify-content: center;">
+                        <u-button-cube-lg style="margin-right: 3px;">
+                            <i class="fa fa-step-backward" aria-hidden="true"></i>
+                        </u-button-cube-lg>
+                        <u-button-cube-lg style="margin-right: 3px;" v-if="playing===false" v-on:click="play()">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                        </u-button-cube-lg>
+                        <u-button-cube-lg style="margin-right: 3px;" v-if="playing===true" v-on:click="pause()">
+                            <i class="fa fa-pause" aria-hidden="true"></i>
+                        </u-button-cube-lg>
+                        <u-button-cube-lg style="margin-right: 3px;">
+                            <i class="fa fa-step-forward" aria-hidden="true"></i>
+                        </u-button-cube-lg>
+                        <u-button-cube-lg style="margin-right: 3px;" class=" u-minor-only">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                        </u-button-cube-lg>
+                    </u-bottom-updown-element>
+                </u-bottom-updown>
             </u-bottom-item>
-            <u-bottom-item>
-                <u-button-cube-lg style="margin-right: 3px;">
-                    <i class="fa fa-play"></i>
-                </u-button-cube-lg>
-                <u-button-cube-lg style="margin-right: 3px;">
-                    <i class="fa fa-forward"></i>
-                </u-button-cube-lg>
-                <u-button-cube-lg style="margin-right: 3px;" class="minor">
+            <u-bottom-item class="u-minor">
+                <u-button-cube-lg style="margin-right: 15px;">
                     <i class="fa fa-random"></i>
+                </u-button-cube-lg>
+                <u-button-cube-lg style="margin-right: 15px;">
+                    <i class="fa fa-refresh"></i>
                 </u-button-cube-lg>
             </u-bottom-item>
         </u-bottom>
+
     </div>
     <script>
         var aimg = document.getElementById('avatarImg');
         var canvas = document.getElementById('avatarCanvas');
+
+        window.onload = function () {
+            DrawImageInCanvas();
+            GetImageColor();
+        }
 
         function DrawImageInCanvas() {
             aimg = document.getElementById('avatarImg');
@@ -102,42 +132,39 @@
             context.drawImage(aimg, 0, 0, canvas.width, canvas.height);
         }
 
-        function GetImageColor()
-        {
+        function GetImageColor() {
             aimg = document.getElementById('avatarImg');
             canvas = document.getElementById('avatarCanvas');
             let context = canvas.getContext('2d');
-            let data=context.getImageData(0,0,aimg.width,aimg.height).data;
+            let data = context.getImageData(0, 0, aimg.width, aimg.height).data;
+
             //console.log(data);
-            let R=0,G=0,B=0,COUNT=0;
-            for(let i=0;i<data.length;i+=4)
-            {
-                R+=data[i]*(data[i+3]/255);
-                G+=data[i+1]*(data[i+3]/255);
-                B+=data[i+2]*(data[i+3]/255);
+            let R = 0, G = 0, B = 0, COUNT = 0;
+            for (let i = 0; i < data.length; i += 4 * 16) {
+                R += data[i] * (data[i + 3] / 255);
+                G += data[i + 1] * (data[i + 3] / 255);
+                B += data[i + 2] * (data[i + 3] / 255);
                 COUNT++;
             }
-            R/=COUNT;
-            G/=COUNT;
-            B/=COUNT;
-            R=Math.round(R);
-            G=Math.round(G);
-            B=Math.round(B);
-            let rgbtext="rgb("+R+","+G+","+B+")";
-            let gray=R*0.299+G*0.587+B*0.114;
-            if(gray-R+gray-B+gray-G<<100)
-            {
-                if(gray>128)
-                {
-                    gray=245;
+            R /= COUNT;
+            G /= COUNT;
+            B /= COUNT;
+            R = Math.round(R);
+            G = Math.round(G);
+            B = Math.round(B);
+            let rgbtext = "rgb(" + R + "," + G + "," + B + ")";
+            let gray = R * 0.299 + G * 0.587 + B * 0.114;
+            if (gray - R + gray - B + gray - G << 100) {
+                if (gray > 128) {
+                    gray = 245;
                 }
-                else{
-                    gray=30;
+                else {
+                    gray = 30;
                 }
             }
-            let contrastcolor=255-Math.round(gray);
-            let conrgbtext="rgb("+contrastcolor+","+contrastcolor+","+contrastcolor+")";
-            less.modifyVars({"bottom-font-color":conrgbtext,"bottom-color":rgbtext});
+            let contrastcolor = 255 - Math.round(gray);
+            let conrgbtext = "rgb(" + contrastcolor + "," + contrastcolor + "," + contrastcolor + ")";
+            less.modifyVars({ "bottom-font-color": conrgbtext, "bottom-color": rgbtext });
         }
 
         window.onresize = function () {
@@ -148,15 +175,21 @@
             el: '#app',
             data: {
                 title: 'Groove 音乐',
-                singer: 'Hanser',
-                music: '名探偵コナン メイン・テーマ (から紅ヴァージョン) '
-            },
-            mounted: function () {
-                DrawImageInCanvas();
-                GetImageColor();
+                singer: 'Westlife',
+                music: 'Soledad',
+                playing: false
             },
             methods: {
-
+                play: function () {
+                    let dom=document.getElementById('player');
+                    dom.play();
+                    this.playing=true;
+                },
+                pause: function () {
+                    let dom=document.getElementById('player');
+                    dom.pause();
+                    this.playing=false;
+                }
             }
         });
     </script>

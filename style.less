@@ -1,6 +1,6 @@
 
 @basecolor:#efefef;
-@titlebar-height: 35px;
+@titlebar-height: 40px;
 @titlebar-fontsize:14px;
 @bottom-color: lightsteelblue;
 @bottom-font-color: #fafafa;
@@ -14,6 +14,16 @@
     border-width: 1px;
     border-color: mediumpurple;
 }*/
+
+@font-face {
+    font-family: "SourceHans";
+    src:url(./sourcehanslight.otf);
+}
+
+*{
+    font-weight: lighter;
+    font-family: "SourceHans";
+}
 
 u-titlebar{
     position:fixed;
@@ -106,25 +116,45 @@ u-bottom-item{
     white-space: nowrap;
 }
 
+.u-bottom-item-hover:hover{
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: darken(@bottom-color,5%);
+    opacity: 0.7;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 500px)
 {
     .u-progress{
-        height: 6px;
-        width: 12vw;
+        height: 3px;
+        width: 90%;
         background-color: darken(@bottom-color,20%);
         margin-left: 5px;
         margin-right: 5px;
     }
-    .minor{
+    .u-major{
+        width: 65vw;
+    }
+    .u-minor{
         display: none;
     }
 }
 
 @media screen and (min-width: 500px)
 {
+    .u-major{
+        width: 35vw;
+    }
+    .u-minor-only{
+        display: none;
+    }
     .u-progress{
-        height: 6px;
-        width: 40vw;
+        height: 3px;
+        width: 90%;
         background-color: darken(@bottom-color,20%);
         margin-left: 5px;
         margin-right: 5px;
@@ -137,24 +167,36 @@ u-bottom-updown{
     justify-content: center;
 }
 
+u-bottom-updown-element{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 .u-progress-font{
     color:lighten(@bottom-font-color,25%);
 }
 
 u-button-cube-lg{
-    height: 40px;
-    width: 40px;
-    font-size: 23px;
-    line-height: 40px;
+    height: 50px;
+    width: 50px;
+    border:none;
+    border-radius: 50px;
+    font-size: 30px;
+    line-height: 50px;
     text-align: center;
 }
 
 u-button-cube-lg:hover{
-    height: 40px;
-    width: 40px;
-    font-size: 23px;
-    line-height: 40px;
+    height: 50px;
+    width: 50px;
+    border:none;
+    border-radius: 50px;
+    background-color: darken(@bottom-color,10%);
+    opacity: 0.75;
+    font-size: 30px;
+    line-height: 50px;
     text-align: center;
-    color:lighten(@font-color,10%);
+    color:lighten(@font-color,20%);
     cursor: pointer;
 }
