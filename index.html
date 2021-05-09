@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Groove Music</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet/less" type="text/css" href="./style.less" />
+    <script>
+        less = {
+            env: "development",
+            javascriptEnabled:true
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .box {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+        }
+
+        .item {
+            color: #ffffff
+        }
+    </style>
+</head>
+
+<body>
+    <div id='app'>
+        <u-titlebar>
+            <u-title-left>{{title}}</u-title-left>
+            <u-title-right>
+                <u-title-button><i class="fa fa-minus" aria-hidden="true"></i></u-title-button>
+                <u-title-button><i class="fa fa-window-maximize" aria-hidden="true"></i> </u-title-button>
+                <u-title-button><i class="fa fa-times" aria-hidden="true"></i></u-title-button>
+            </u-title-right>
+        </u-titlebar>
+        <u-titlebar-placeholder></u-titlebar-placeholder>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    <div class="box">
+                        <span class="item">item</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+        </div>
+
+        <u-bottom>
+            <u-bottom-item>
+                <canvas id="avatarCanvas">
+                </canvas>
+                <img id='avatarImg' src="./avatar.jpg" style="display: none;">
+                <u-bottom-updown style="margin-left: 5px;" class="minor">
+                    <span style="font-size:medium;">{{music}}</span>
+                    <span style="font-size: small;">{{singer}}</span>
+                </u-bottom-updown>
+            </u-bottom-item>
+            <u-bottom-item>
+                <span class="u-progress-font">00:00</span>
+                <div>
+                    <!--div class="progress-bar progress-bar-striped progress-bar-animated" style="width:50%"></div-->
+                    <input type="range" class="u-progress">
+                </div>
+                <span class="u-progress-font">03:42</span>
+            </u-bottom-item>
+            <u-bottom-item>
+                <u-button-cube-lg style="margin-right: 3px;">
+                    <i class="fa fa-play"></i>
+                </u-button-cube-lg>
+                <u-button-cube-lg style="margin-right: 3px;">
+                    <i class="fa fa-forward"></i>
+                </u-button-cube-lg>
+                <u-button-cube-lg style="margin-right: 3px;" class="minor">
+                    <i class="fa fa-random"></i>
+                </u-button-cube-lg>
+            </u-bottom-item>
+        </u-bottom>
+    </div>
+    <script>
+        var aimg = document.getElementById('avatarImg');
+        var canvas = document.getElementById('avatarCanvas');
+
+        function DrawImageInCanvas() {
+            aimg = document.getElementById('avatarImg');
+            canvas = document.getElementById('avatarCanvas');
+            canvas.width = aimg.width;
+            canvas.height = aimg.height;
+            let context = canvas.getContext('2d');
+            context.drawImage(aimg, 0, 0, canvas.width, canvas.height);
+        }
+
+        function GetImageColor()
+        {
+            aimg = document.getElementById('avatarImg');
+            canvas = document.getElementById('avatarCanvas');
+            let context = canvas.getContext('2d');
+            let data=context.getImageData(0,0,aimg.width,aimg.height).data;
+            //console.log(data);
+            let R=0,G=0,B=0,COUNT=0;
+            for(let i=0;i<data.length;i+=4)
+            {
+                R+=data[i]*(data[i+3]/255);
+                G+=data[i+1]*(data[i+3]/255);
+                B+=data[i+2]*(data[i+3]/255);
+                COUNT++;
+            }
+            R/=COUNT;
+            G/=COUNT;
+            B/=COUNT;
+            R=Math.round(R);
+            G=Math.round(G);
+            B=Math.round(B);
+            let rgbtext="rgb("+R+","+G+","+B+")";
+            let gray=R*0.299+G*0.587+B*0.114;
+            if(gray-R+gray-B+gray-G<<100)
+            {
+                if(gray>128)
+                {
+                    gray=245;
+                }
+                else{
+                    gray=30;
+                }
+            }
+            let contrastcolor=255-Math.round(gray);
+            let conrgbtext="rgb("+contrastcolor+","+contrastcolor+","+contrastcolor+")";
+            less.modifyVars({"bottom-font-color":conrgbtext,"bottom-color":rgbtext});
+        }
+
+        window.onresize = function () {
+
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                title: 'Groove 音乐',
+                singer: 'Hanser',
+                music: '名探偵コナン メイン・テーマ (から紅ヴァージョン) '
+            },
+            mounted: function () {
+                DrawImageInCanvas();
+                GetImageColor();
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+
+</html>
