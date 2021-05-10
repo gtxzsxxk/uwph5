@@ -15,6 +15,11 @@
     border-color: mediumpurple;
 }*/
 
+body{
+    width: 100%;
+    height: 100%;
+}
+
 @font-face {
     font-family: "SourceHans";
     src:url(./sourcehanslight.otf);
@@ -127,6 +132,7 @@ u-bottom-item{
     cursor: pointer;
 }
 
+/*Small screens*/
 @media screen and (max-width: 500px)
 {
     .u-progress{
@@ -142,8 +148,28 @@ u-bottom-item{
     .u-minor{
         display: none;
     }
+    u-container{
+        display: flex;
+        flex-direction: column!important;
+        justify-content: flex-start!important;
+        width: 100%;
+        height: 100%;
+    }
+    u-navigator-side{
+        display: flex;
+        flex-direction: column;
+        width: 100%!important;
+        height: fit-content;
+        background-color: @basecolor;
+    }
 }
 
+.u-parent{
+        width: 100%;
+        height: calc(~"100vh - @{titlebar-height} - @{bottom-height}");
+}
+
+/* For PC screens */
 @media screen and (min-width: 500px)
 {
     .u-major{
@@ -158,6 +184,19 @@ u-bottom-item{
         background-color: darken(@bottom-color,20%);
         margin-left: 5px;
         margin-right: 5px;
+    }
+    u-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+    }
+    u-navigator-side{
+        display: flex;
+        flex-direction: column;
+        width: 30vw;
+        background-color: @basecolor;
     }
 }
 
@@ -177,7 +216,7 @@ u-bottom-updown-element{
     color:lighten(@bottom-font-color,25%);
 }
 
-u-button-cube-lg{
+u-button-circle-lg{
     height: 50px;
     width: 50px;
     border:none;
@@ -187,7 +226,7 @@ u-button-cube-lg{
     text-align: center;
 }
 
-u-button-cube-lg:hover{
+u-button-circle-lg:hover{
     height: 50px;
     width: 50px;
     border:none;
@@ -199,4 +238,66 @@ u-button-cube-lg:hover{
     text-align: center;
     color:lighten(@font-color,20%);
     cursor: pointer;
+}
+
+u-button-circle-md{
+    height: 30px;
+    width: 30px;
+    border:none;
+    border-radius: 30px;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+}
+
+u-button-circle-md:hover{
+    height: 30px;
+    width: 30px;
+    border:none;
+    border-radius: 30px;
+    background-color: darken(@bottom-color,10%);
+    opacity: 0.75;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    color:lighten(@font-color,20%);
+    cursor: pointer;
+}
+
+u-navigator-side-item{
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 1.0em;
+    height: @titlebar-height * 1.3;
+    line-height: @titlebar-height * 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+}
+.u-navigator-side-item-chosen{
+    border-left:solid;
+    border-color: #ffffff - @bottom-color;
+    border-width: 6px;
+    padding-left: calc(15px-6px)!important;
+}
+
+u-navigator-side-item:hover{
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 1.0em;
+    height: @titlebar-height * 1.3;
+    line-height: @titlebar-height * 1.3;
+    background-color: darken(@basecolor,5%);
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+u-space{
+    width: 1vw;
+    display: inline-block;
 }
