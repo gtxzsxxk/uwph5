@@ -1,5 +1,6 @@
 
 @basecolor:#efefef;
+@themecolor:lightsteelblue;
 @titlebar-height: 40px;
 @titlebar-fontsize:14px;
 @bottom-color: lightsteelblue;
@@ -300,4 +301,16 @@ u-navigator-side-item:hover{
 u-space{
     width: 1vw;
     display: inline-block;
+}
+
+#u-loading-overall{
+    width: 100vw;
+    height: 100vh;
+    background-color: @themecolor;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:absolute;
+    z-index: 90;
 }
